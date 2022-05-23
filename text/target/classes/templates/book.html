@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/book.css}">
+    <title>疫情防控管理页面</title>
+</head>
+<body>
+<form>
+    <div class="part1">
+        <div class="header">
+            <div class="logo">学校疫情防控系统</div>
+            <div id="nav" class="nav">
+                <ul>
+                    <li class="li">
+                        <a th:href="@{/user}">系统首页</a>
+                    </li>
+                    <li class="li">
+                        <a th:href="@{/message}">学生信息</a>
+                    </li>
+                    <li class="li">
+                        <a th:href="@{/map}">学生实时位置</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="headerbt">
+            <div class="hleft">
+                <span class="margin">您好!</span>
+                <span class="margin" th:text="${session.cgx}"></span>
+            </div>
+            <div class="hright">
+                <a class="xgmm" th:href="@{/change}">[修改密码]</a>
+                <a class="zx" th:href="@{/login.html}">[注销]</a>
+            </div>
+        </div>
+    </div>
+    <div class="part2">
+        <div id="container">
+            <div id="photo">
+                <img th:src="@{/img/1.jpg}"/>
+                <img th:src="@{/img/2.jpg}"/>
+                <img th:src="@{/img/3.jpg}"/>
+            </div>
+        </div>
+    </div>
+</form>
+</body>
+</html>

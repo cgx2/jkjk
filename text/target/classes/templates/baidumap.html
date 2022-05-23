@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>学生定位</title>
+    <link rel="stylesheet" th:href="@{/css/map.css}">
+    <script  type="text/javascript" src="http://api.map.baidu.com/getscript?v=2.0&ak= 5n9bL5rKhgqSko8VOQfWqqpcuhq58ujN" ></script>
+<!--    <script type="text/javascript" src="https://api.map.baidu.com/api?v=1.0&&type=webgl&ak=5n9bL5rKhgqSko8VOQfWqqpcuhq58ujN"></script>-->
+</head>
+<body>
+<div class="part1">
+    <div class="header">
+        <div class="logo">学校疫情防控系统</div>
+        <div id="nav" class="nav">
+            <ul>
+                <li class="li">
+                    <a th:href="@{/user}">系统首页</a>
+                </li>
+                <li class="li">
+                    <a th:href="@{/message}">学生信息</a>
+                </li>
+                <li class="li">
+                    <a th:href="@{/map}">学生实时位置</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="headerbt">
+        <div class="hleft">
+            <span class="margin">您好!</span>
+            <span class="margin" th:text="${session.cgx}"></span>
+        </div>
+        <div class="hright">
+            <a class="xgmm" th:href="@{/change}">[修改密码]</a>
+            <a class="zx" th:href="@{/login.html}">[注销]</a>
+        </div>
+    </div>
+</div>
+<div class="baidu" id="baidu">
+</div>
+</body>
+<script>
+    let baidu=document.getElementById("baidu")
+    let map
+    if (navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(myGPSfun)
+    }else {alert("您的浏览器不支持地理定位")}
+    function myGPSfun(e){
+        let jd=e.coords.longitude//经度获取
+        let wd=e.coords.latitude//纬度获取
+        console.log(jd)
+        console.log(wd)
+        map=new BMap.Map("baidu")
+        // let point=new BMap.Point(120.431111,30.4477777)
+        let point=new BMap.Point(jd,wd)
+        let point2=new BMap.Point(120.436972,30.447156)
+        let point3=new BMap.Point(120.4846,30.1121)
+        let convertor=new BMap.Convertor()
+        let pointarr=[]
+        pointarr.push(point)
+        pointarr.push(point2)
+        pointarr.push(point3)
+        convertor.translate(pointarr,1,5,translatecalback)
+    }
+    function du(){
+        navigator.geolocation.getCurrentPosition(shangbao)
+    }
+    function du2(){
+        navigator.geolocation.getCurrentPosition(shangbao2)
+    }
+    function shangbao(e){
+        let jd=e.coords.longitude//经度获取
+        let wd=e.coords.latitude//纬度获取
+        alert("陈冠希目前所在经纬度为:"+"经度"+jd+" "+"纬度"+wd)
+    }
+    function shangbao2(e){
+        let jd=e.coords.longitude//经度获取
+        let wd=e.coords.latitude//纬度获取
+        alert("吴彦祖目前所在经纬度为:"+"经度"+"120.436972"+" "+"纬度"+"30.447156")
+    }
+    setInterval("du()","5000")
+    setInterval("shangbao()","50000")
+    function translatecalback(e){
+        if (e.status==0){
+            let marker=new BMap.Marker(e.points[0])
+            let marker2=new BMap.Marker(e.points[1])
+            let marker3=new BMap.Marker(e.points[2])
+            map.centerAndZoom(e.points[0],17)
+            map.addOverlay(marker)
+            map.addOverlay(marker2)
+            map.addOverlay(marker3)
+            var label = new BMap.Label("陈冠希",{offset:new BMap.Size(20,-10)});//标签
+            var label2 = new BMap.Label("吴彦祖",{offset:new BMap.Size(20,-10)});//标签
+            var label3 = new BMap.Label("儿子",{offset:new BMap.Size(20,-10)});//标签
+            marker.setLabel(label)
+            marker.addEventListener("click",function (){
+                du()
+                shangbao()
+            })
+            marker2.setLabel(label2)
+            marker2.addEventListener("click",function (){
+                du2()
+                shangbao2()
+            })
+            marker3.setLabel(label3)
+            map.enableScrollWheelZoom(true)
+        }
+    }
+</script>
+</html>
